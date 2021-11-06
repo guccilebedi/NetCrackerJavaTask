@@ -6,6 +6,11 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class MobileCommunication extends Contract {
+    /*
+    * @param minutes amount of minutes that a tariff offers
+    * @param messages amount of SMS messages that a tariff offers
+    * @param gigabytes amount of gigabytes that a tariff offers
+     */
     private int minutes;
     private int messages;
     private int gigabytes;

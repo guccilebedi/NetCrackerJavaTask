@@ -6,6 +6,13 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public abstract class Contract {
+    /*
+    * @param id contracts id
+    * @param dateStart contracts starting date
+    * @param dateEnd contracts ending date
+    * @param number contracts number
+    * @param person - person, who has signed the contract
+     */
     private int id;
     private LocalDate dateStart;
     private LocalDate dateEnd;

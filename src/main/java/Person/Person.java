@@ -5,22 +5,36 @@ import java.time.Period;
 import java.util.Objects;
 
 public class Person {
+    /*
+     * @param id persons id
+     * @param fullName persons full name
+     * @param dateOfBirth persons date of birth
+     * @param sex person sex (using enum Sex)
+     * @param idSeries series of persons id
+     * @param idNumber number of persons id
+     */
     private int id;
-    private String fio;
+    private String fullName;
     private LocalDate dateOfBirth;
     private Sex sex;
     private String idSeries;
     private String idNumber;
 
-    public Person(int id, String fio, LocalDate dateOfBirth, Sex sex, String idSeries, String idNumber) {
+    public Person(int id, String fullName, LocalDate dateOfBirth, Sex sex, String idSeries, String idNumber) {
         this.id = id;
-        this.fio = fio;
+        this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
         this.sex = sex;
         this.idSeries = idSeries;
         this.idNumber = idNumber;
     }
 
+    /*
+    * getAge method returns the amount of years between
+    * the @param dateOfBirth and the system date
+    *
+    * @return persons age
+     */
     public int getAge() {
         return Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
@@ -33,12 +47,12 @@ public class Person {
         this.id = id;
     }
 
-    public String getFio() {
-        return fio;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFio(String fio) {
-        this.fio = fio;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public LocalDate getDateOfBirth() {
@@ -77,7 +91,7 @@ public class Person {
     @Override
     public String toString() {
         return "\n Person:" + id +
-                ", " + fio +
+                ", " + fullName +
                 ", " + dateOfBirth +
                 ", " + sex +
                 ", " + idSeries +
@@ -89,11 +103,11 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return id == person.id && fio.equals(person.fio) && dateOfBirth.equals(person.dateOfBirth) && sex == person.sex && idSeries.equals(person.idSeries) && idNumber.equals(person.idNumber);
+        return id == person.id && fullName.equals(person.fullName) && dateOfBirth.equals(person.dateOfBirth) && sex == person.sex && idSeries.equals(person.idSeries) && idNumber.equals(person.idNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fio, dateOfBirth, sex, idSeries, idNumber);
+        return Objects.hash(id, fullName, dateOfBirth, sex, idSeries, idNumber);
     }
 }

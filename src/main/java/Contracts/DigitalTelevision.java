@@ -6,6 +6,9 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class DigitalTelevision extends Contract{
+    /*
+    * @param channelPackage type of channel package
+     */
     private String channelPackage;
 
     public DigitalTelevision(int id, LocalDate dateStart, LocalDate dateEnd, int number, Person person, String channelPackage) {

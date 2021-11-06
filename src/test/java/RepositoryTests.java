@@ -10,7 +10,6 @@ import org.junit.Test;
 import java.time.LocalDate;
 
 public class RepositoryTests {
-
     Person person1 = new Person(1, "Person1", LocalDate.of(2002, 9, 23), Sex.MALE, "2017", "015203");
     Person person2 = new Person(2, "Person2", LocalDate.of(1988, 1, 1), Sex.FEMALE, "2008", "331721");
     Person person3 = new Person(3, "Person3", LocalDate.of(2000, 1, 27), Sex.MALE, "2020", "545239");
@@ -18,6 +17,9 @@ public class RepositoryTests {
     WiredInternet contract2 = new WiredInternet(2, LocalDate.of(2020, 10, 5), LocalDate.of(2022, 10, 5), 1, person2, 100);
     DigitalTelevision contract3 = new DigitalTelevision(3, LocalDate.of(2021, 1, 3), LocalDate.of(2022, 1, 3), 1, person3, "Standard");
 
+    /*
+    * Tests add method
+     */
     @Test
     public void testAdd() {
         Repository repository = new Repository();
@@ -27,6 +29,9 @@ public class RepositoryTests {
         Assert.assertEquals(3, repository.getSize());
     }
 
+    /*
+    * Tests sizeExtension method
+     */
     @Test
     public void testSizeExtension() {
         Repository repository = new Repository();
@@ -36,6 +41,9 @@ public class RepositoryTests {
         Assert.assertEquals(20, repository.getSize());
     }
 
+    /*
+    * Tests getByID method
+     */
     @Test
     public void testGetById() {
         Repository repository = new Repository();
@@ -47,6 +55,9 @@ public class RepositoryTests {
         Assert.assertEquals(contract3, repository.getById(3));
     }
 
+    /*
+    * Tests remove method
+     */
     @Test
     public void testRemove() {
         Repository repository = new Repository();
