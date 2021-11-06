@@ -18,7 +18,7 @@ public class RepositoryTests {
     DigitalTelevision contract3 = new DigitalTelevision(3, LocalDate.of(2021, 1, 3), LocalDate.of(2022, 1, 3), 1, person3, "Standard");
 
     /*
-    * Tests add method
+     * Tests add method
      */
     @Test
     public void testAdd() {
@@ -30,7 +30,7 @@ public class RepositoryTests {
     }
 
     /*
-    * Tests sizeExtension method
+     * Tests sizeExtension method
      */
     @Test
     public void testSizeExtension() {
@@ -42,7 +42,7 @@ public class RepositoryTests {
     }
 
     /*
-    * Tests getByID method
+     * Tests getByID method
      */
     @Test
     public void testGetById() {
@@ -50,13 +50,13 @@ public class RepositoryTests {
         repository.add(contract1);
         repository.add(contract2);
         repository.add(contract3);
-        Assert.assertEquals(contract1, repository.getById(1));
-        Assert.assertEquals(contract2, repository.getById(2));
-        Assert.assertEquals(contract3, repository.getById(3));
+        Assert.assertEquals(contract1, repository.getById(1, MobileCommunication.class));
+        Assert.assertEquals(contract2, repository.getById(2, WiredInternet.class));
+        Assert.assertEquals(contract3, repository.getById(3, DigitalTelevision.class));
     }
 
     /*
-    * Tests remove method
+     * Tests remove method
      */
     @Test
     public void testRemove() {
@@ -65,10 +65,10 @@ public class RepositoryTests {
         repository.add(contract2);
         repository.add(contract3);
         repository.remove(1);
-        Assert.assertNull(repository.getById(1));
+        Assert.assertNull(repository.getById(1, MobileCommunication.class));
         repository.remove(2);
-        Assert.assertNull(repository.getById(2));
+        Assert.assertNull(repository.getById(2, WiredInternet.class));
         repository.remove(3);
-        Assert.assertNull(repository.getById(3));
+        Assert.assertNull(repository.getById(3, DigitalTelevision.class));
     }
 }

@@ -1,6 +1,8 @@
 package Repository;
 
 import Contracts.Contract;
+import Contracts.DigitalTelevision;
+import Contracts.MobileCommunication;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -30,28 +32,28 @@ public class Repository {
     }
 
     /*
-    * getById method checks the equality of every
-    * contract id in a repository to the given one
-    *
-    * @param id id of a contract which is needed to be found
-    * @return contract with an equal id
+     * getById method checks the equality of every
+     * contract id in a repository to the given one
+     *
+     * @param id id of a contract which is needed to be found
+     * @return contract with an equal id
      */
-    public Contract getById(int id) {
+    public <T> T getById(int id, Class<T> expectedClass) {
         for (int i = 0; i < size; i++) {
-            if (repository[i].getId() == id) {
-                return repository[i];
+            if (repository[i].getId() == id && repository[i].getClass().equals(expectedClass)) {
+                return (T) repository[i];
             }
         }
         return null;
     }
 
     /*
-    * remove method works the same as getById method,
-    * but, if the contract with a given id was found,
-    * it moves all repository elements after it
-    * on one cell to the left
-    *
-    * @param id id of a contract which is needed to be removed
+     * remove method works the same as getById method,
+     * but, if the contract with a given id was found,
+     * it moves all repository elements after it
+     * on one cell to the left
+     *
+     * @param id id of a contract which is needed to be removed
      */
     public void remove(int id) {
         for (int i = 0; i < size + 1; i++) {
@@ -72,11 +74,11 @@ public class Repository {
     }
 
     /*
-    * extendSize method checks if the number of
-    * contracts in a repository is equal to
-    * its real size and if so, it copies
-    * all elements to a new array, which is
-    * two times bigger than the old one
+     * extendSize method checks if the number of
+     * contracts in a repository is equal to
+     * its real size and if so, it copies
+     * all elements to a new array, which is
+     * two times bigger than the old one
      */
     private void extendSize() {
         if (size == repository.length) {

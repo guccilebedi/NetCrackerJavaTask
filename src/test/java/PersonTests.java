@@ -11,7 +11,7 @@ public class PersonTests {
     Person person3 = new Person(3, "Person3", LocalDate.of(2000, 1, 27), Sex.MALE, "2020", "545239");
 
     /*
-    * Tests getAge method
+     * Tests getAge method
      */
     @Test
     public void testGetAge() {

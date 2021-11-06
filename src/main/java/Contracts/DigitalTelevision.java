@@ -5,9 +5,9 @@ import Person.Person;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class DigitalTelevision extends Contract{
+public class DigitalTelevision extends Contract {
     /*
-    * @param channelPackage type of channel package
+     * @param channelPackage type of channel package
      */
     private String channelPackage;
 

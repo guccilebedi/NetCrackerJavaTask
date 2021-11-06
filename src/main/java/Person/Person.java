@@ -30,10 +30,10 @@ public class Person {
     }
 
     /*
-    * getAge method returns the amount of years between
-    * the @param dateOfBirth and the system date
-    *
-    * @return persons age
+     * getAge method returns the amount of years between
+     * the @param dateOfBirth and the system date
+     *
+     * @return persons age
      */
     public int getAge() {
         return Period.between(dateOfBirth, LocalDate.now()).getYears();
