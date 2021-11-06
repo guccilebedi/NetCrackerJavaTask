@@ -18,8 +18,8 @@ public class Repository {
         size++;
     }
 
-    public Contract get(int id) {
-        for (int i = 0; i < rep.length; i++) {
+    public Contract getById(int id) {
+        for (int i = 0; i < size; i++) {
             if (rep[i].getId() == id) {
                 return rep[i];
             }
@@ -39,6 +39,10 @@ public class Repository {
                 break;
             }
         }
+    }
+
+    public int getSize() {
+        return size;
     }
 
     private void extendSize() {
