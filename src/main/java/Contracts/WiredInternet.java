@@ -6,6 +6,9 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class WiredInternet extends Contract{
+    /*
+    * @param speed highest internet speed that a tariff offers
+     */
     private int speed;
 
     public WiredInternet(int id, LocalDate dateStart, LocalDate dateEnd, int number, Person person, int speed) {
