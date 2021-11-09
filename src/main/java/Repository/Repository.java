@@ -6,13 +6,15 @@ import Contracts.MobileCommunication;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 public class Repository {
     /*
      * @param repository simple array for contracts
      * @param size number of contracts in a repository
      */
-    private Contract[] repository = new Contract[16];
+    private Contract[] repository = new Contract[10];
     private int size = 0;
 
     public Repository() {
@@ -36,11 +38,30 @@ public class Repository {
      * contract id in a repository to the given one
      *
      * @param id id of a contract which is needed to be found
+     * @param expectedClass a needed return class
      * @return contract with an equal id
      */
     public <T> T getById(int id, Class<T> expectedClass) {
         for (int i = 0; i < size; i++) {
             if (repository[i].getId() == id && repository[i].getClass().equals(expectedClass)) {
+                return (T) repository[i];
+            }
+        }
+        return null;
+    }
+
+    /*
+     * search method does the same thing as getById,
+     * but uses a predicate so a contract may be found
+     * by its owners full name or etc.
+     *
+     * @param predicate searching predicate
+     * @param expectedClass a needed return class
+     * @return contract, equal to the predicate
+     */
+    public <T> T search(Predicate<Contract> predicate, Class<T> expectedClass) {
+        for (int i = 0; i < size; i++) {
+            if (predicate.test(repository[i]) && repository[i].getClass().equals(expectedClass)) {
                 return (T) repository[i];
             }
         }
@@ -82,7 +103,7 @@ public class Repository {
      */
     private void extendSize() {
         if (size == repository.length) {
-            repository = Arrays.copyOf(repository, repository.length * 2);
+            repository = Arrays.copyOf(repository, (int) (repository.length * 1.5 + 1));
         }
     }
 

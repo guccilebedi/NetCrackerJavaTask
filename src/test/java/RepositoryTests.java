@@ -1,3 +1,4 @@
+import Contracts.Contract;
 import Contracts.DigitalTelevision;
 import Contracts.MobileCommunication;
 import Contracts.WiredInternet;
@@ -8,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.util.function.Predicate;
 
 public class RepositoryTests {
     Person person1 = new Person(1, "Person1", LocalDate.of(2002, 9, 23), Sex.MALE, "2017", "015203");
@@ -53,6 +55,23 @@ public class RepositoryTests {
         Assert.assertEquals(contract1, repository.getById(1, MobileCommunication.class));
         Assert.assertEquals(contract2, repository.getById(2, WiredInternet.class));
         Assert.assertEquals(contract3, repository.getById(3, DigitalTelevision.class));
+    }
+
+    /*
+     * Tests search method
+     */
+    @Test
+    public void testSearch() {
+        Repository repository = new Repository();
+        repository.add(contract1);
+        repository.add(contract2);
+        repository.add(contract3);
+        Predicate<Contract> predicate1 = contract -> contract.getDateStart().equals(LocalDate.of(2021, 1, 3));
+        Predicate<Contract> predicate2 = contract -> contract.getDateEnd().equals(LocalDate.of(2022, 10, 5));
+        Predicate<Contract> predicate3 = contract -> contract.getPerson().getFullName().equals("Person3");
+        Assert.assertEquals(contract1, repository.search(predicate1, MobileCommunication.class));
+        Assert.assertEquals(contract2, repository.search(predicate2, WiredInternet.class));
+        Assert.assertEquals(contract3, repository.search(predicate3, DigitalTelevision.class));
     }
 
     /*
