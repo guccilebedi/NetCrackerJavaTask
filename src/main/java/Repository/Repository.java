@@ -94,6 +94,14 @@ public class Repository {
         return size;
     }
 
+    public Contract[] getRepository() {
+        return repository;
+    }
+
+    public void setRepository(Contract[] repository) {
+        this.repository = repository;
+    }
+
     /*
      * extendSize method checks if the number of
      * contracts in a repository is equal to

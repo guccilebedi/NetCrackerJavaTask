@@ -90,12 +90,12 @@ public class Person {
 
     @Override
     public String toString() {
-        return "\n Person:" + id +
+        return " Person:" + id +
                 ", " + fullName +
                 ", " + dateOfBirth +
                 ", " + sex +
                 ", " + idSeries +
-                ", " + idNumber + "\n";
+                ", " + idNumber;
     }
 
     @Override
