@@ -5,10 +5,15 @@ import Contracts.WiredInternet;
 import Person.Person;
 import Person.Sex;
 import Repository.Repository;
+import Sort.BubbleSort;
+import Sort.Comparators;
+import Sort.InsertionSort;
+import Sort.SelectionSort;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.function.Predicate;
 
 public class RepositoryTests {
@@ -17,7 +22,8 @@ public class RepositoryTests {
     Person person3 = new Person(3, "Person3", LocalDate.of(2000, 1, 27), Sex.MALE, "2020", "545239");
     MobileCommunication contract1 = new MobileCommunication(1, LocalDate.of(2021, 1, 3), LocalDate.of(2022, 1, 3), 1, person1, 400, 400, 40);
     WiredInternet contract2 = new WiredInternet(2, LocalDate.of(2020, 10, 5), LocalDate.of(2022, 10, 5), 1, person2, 100);
-    DigitalTelevision contract3 = new DigitalTelevision(3, LocalDate.of(2021, 1, 3), LocalDate.of(2022, 1, 3), 1, person3, "Standard");
+    DigitalTelevision contract3 = new DigitalTelevision(3, LocalDate.of(2020, 1, 3), LocalDate.of(2022, 1, 3), 1, person3, "Standard");
+    Comparators comparators = new Comparators();
 
     /*
      * Tests add method
@@ -66,12 +72,12 @@ public class RepositoryTests {
         repository.add(contract1);
         repository.add(contract2);
         repository.add(contract3);
-        Predicate<Contract> predicate1 = contract -> contract.getDateStart().equals(LocalDate.of(2021, 1, 3));
-        Predicate<Contract> predicate2 = contract -> contract.getDateEnd().equals(LocalDate.of(2022, 10, 5));
-        Predicate<Contract> predicate3 = contract -> contract.getPerson().getFullName().equals("Person3");
-        Assert.assertEquals(contract1, repository.search(predicate1, MobileCommunication.class));
-        Assert.assertEquals(contract2, repository.search(predicate2, WiredInternet.class));
-        Assert.assertEquals(contract3, repository.search(predicate3, DigitalTelevision.class));
+        Predicate<Contract> dateStartPredicate = contract -> contract.getDateStart().equals(LocalDate.of(2021, 1, 3));
+        Predicate<Contract> dateEndPredicate = contract -> contract.getDateEnd().equals(LocalDate.of(2022, 10, 5));
+        Predicate<Contract> ownersFullNamePredicate = contract -> contract.getPerson().getFullName().equals("Person3");
+        Assert.assertEquals(contract1, repository.search(dateStartPredicate, MobileCommunication.class));
+        Assert.assertEquals(contract2, repository.search(dateEndPredicate, WiredInternet.class));
+        Assert.assertEquals(contract3, repository.search(ownersFullNamePredicate, DigitalTelevision.class));
     }
 
     /*
@@ -89,5 +95,53 @@ public class RepositoryTests {
         Assert.assertNull(repository.getById(2, WiredInternet.class));
         repository.remove(3);
         Assert.assertNull(repository.getById(3, DigitalTelevision.class));
+    }
+
+    /*
+     * Tests bubble sort method
+     */
+    @Test
+    public void testBubbleSort() {
+        BubbleSort bubbleSort = new BubbleSort();
+        Repository repository = new Repository();
+        repository.add(contract3);
+        repository.add(contract2);
+        repository.add(contract1);
+        bubbleSort.sort(repository, comparators.getIdComparator());
+        Assert.assertEquals(0, repository.getIndex(contract1));
+        Assert.assertEquals(1, repository.getIndex(contract2));
+        Assert.assertEquals(2, repository.getIndex(contract3));
+    }
+
+    /*
+     * Tests insertion sort method
+     */
+    @Test
+    public void testInsertionSort() {
+        InsertionSort insertionSort = new InsertionSort();
+        Repository repository = new Repository();
+        repository.add(contract1);
+        repository.add(contract2);
+        repository.add(contract3);
+        insertionSort.sort(repository, comparators.getDateStartComparator());
+        Assert.assertEquals(2, repository.getIndex(contract1));
+        Assert.assertEquals(1, repository.getIndex(contract2));
+        Assert.assertEquals(0, repository.getIndex(contract3));
+    }
+
+    /*
+     * Tests selection sort method
+     */
+    @Test
+    public void testSelectionSort() {
+        SelectionSort selectionSort = new SelectionSort();
+        Repository repository = new Repository();
+        repository.add(contract3);
+        repository.add(contract2);
+        repository.add(contract1);
+        selectionSort.sort(repository, comparators.getOwnersFullNameComparator());
+        Assert.assertEquals(0, repository.getIndex(contract1));
+        Assert.assertEquals(1, repository.getIndex(contract2));
+        Assert.assertEquals(2, repository.getIndex(contract3));
     }
 }

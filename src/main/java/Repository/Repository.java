@@ -69,6 +69,20 @@ public class Repository {
     }
 
     /*
+     * getIndex method is used only for sorts testing
+     *
+     * @param contract contract which index is needed
+     */
+    public int getIndex(Contract contract) {
+        for (int i = 0; i < size; i++) {
+            if (repository[i].equals(contract)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /*
      * remove method works the same as getById method,
      * but, if the contract with a given id was found,
      * it moves all repository elements after it
