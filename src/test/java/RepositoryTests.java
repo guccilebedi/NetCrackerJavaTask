@@ -6,6 +6,7 @@ import Sort.BubbleSort;
 import Sort.Comparators;
 import Sort.InsertionSort;
 import Sort.SelectionSort;
+import Utils.FileUtils;
 import com.opencsv.exceptions.CsvValidationException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -143,7 +144,7 @@ public class RepositoryTests {
      */
     @Test
     public void testReadFile() throws CsvValidationException, IOException {
-        Repository repository = FileTools.readFile("input.csv");
+        Repository repository = FileUtils.readFile("input.csv");
         Assert.assertEquals(contract1, repository.getById(1, MobileCommunication.class));
         Assert.assertEquals(contract2, repository.getById(2, WiredInternet.class));
         Assert.assertEquals(contract3, repository.getById(3, DigitalTelevision.class));

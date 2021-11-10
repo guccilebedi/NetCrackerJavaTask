@@ -1,5 +1,8 @@
-package Contracts;
+package Utils;
 
+import Contracts.DigitalTelevision;
+import Contracts.MobileCommunication;
+import Contracts.WiredInternet;
 import Person.Person;
 import Person.Sex;
 import Repository.Repository;
@@ -11,7 +14,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class FileTools {
+public class FileUtils {
     /*
      * readFile method reads csv file into
      * a repository using opencsv
