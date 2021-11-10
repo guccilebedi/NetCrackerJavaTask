@@ -17,16 +17,14 @@ public class Person {
     private String fullName;
     private LocalDate dateOfBirth;
     private Sex sex;
-    private String idSeries;
-    private String idNumber;
+    private String idSeriesNumber;
 
-    public Person(int id, String fullName, LocalDate dateOfBirth, Sex sex, String idSeries, String idNumber) {
+    public Person(int id, String fullName, LocalDate dateOfBirth, Sex sex, String idSeriesNumber) {
         this.id = id;
         this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
         this.sex = sex;
-        this.idSeries = idSeries;
-        this.idNumber = idNumber;
+        this.idSeriesNumber = idSeriesNumber;
     }
 
     /*
@@ -71,22 +69,13 @@ public class Person {
         this.sex = sex;
     }
 
-    public String getIdSeries() {
-        return idSeries;
+    public String getIdSeriesNumber() {
+        return idSeriesNumber;
     }
 
-    public void setIdSeries(String idSeries) {
-        this.idSeries = idSeries;
+    public void setIdSeriesNumber(String idSeriesNumber) {
+        this.idSeriesNumber = idSeriesNumber;
     }
-
-    public String getIdNumber() {
-        return idNumber;
-    }
-
-    public void setIdNumber(String idNumber) {
-        this.idNumber = idNumber;
-    }
-
 
     @Override
     public String toString() {
@@ -94,8 +83,7 @@ public class Person {
                 ", " + fullName +
                 ", " + dateOfBirth +
                 ", " + sex +
-                ", " + idSeries +
-                ", " + idNumber;
+                ", " + idSeriesNumber;
     }
 
     @Override
@@ -103,11 +91,11 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return id == person.id && fullName.equals(person.fullName) && dateOfBirth.equals(person.dateOfBirth) && sex == person.sex && idSeries.equals(person.idSeries) && idNumber.equals(person.idNumber);
+        return id == person.id && fullName.equals(person.fullName) && dateOfBirth.equals(person.dateOfBirth) && sex == person.sex && idSeriesNumber.equals(person.idSeriesNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fullName, dateOfBirth, sex, idSeries, idNumber);
+        return Objects.hash(id, fullName, dateOfBirth, sex, idSeriesNumber);
     }
 }

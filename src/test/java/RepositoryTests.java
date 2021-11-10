@@ -6,18 +6,20 @@ import Sort.BubbleSort;
 import Sort.Comparators;
 import Sort.InsertionSort;
 import Sort.SelectionSort;
+import com.opencsv.exceptions.CsvValidationException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class RepositoryTests {
-    Person person1 = new Person(1, "Person1", LocalDate.of(2002, 9, 23), Sex.MALE, "2017", "015203");
-    Person person2 = new Person(2, "Person2", LocalDate.of(1988, 1, 1), Sex.FEMALE, "2008", "331721");
-    Person person3 = new Person(3, "Person3", LocalDate.of(2000, 1, 27), Sex.MALE, "2020", "545239");
+    Person person1 = new Person(1, "Person1", LocalDate.of(2002, 9, 23), Sex.MALE, "2017015203");
+    Person person2 = new Person(2, "Person2", LocalDate.of(1988, 1, 1), Sex.FEMALE, "2008331721");
+    Person person3 = new Person(3, "Person3", LocalDate.of(2000, 1, 27), Sex.MALE, "2020545239");
     MobileCommunication contract1 = new MobileCommunication(1, LocalDate.of(2021, 1, 3), LocalDate.of(2022, 1, 3), 1, person1, 400, 400, 40);
-    WiredInternet contract2 = new WiredInternet(2, LocalDate.of(2020, 10, 5), LocalDate.of(2022, 10, 5), 1, person2, 100);
-    DigitalTelevision contract3 = new DigitalTelevision(3, LocalDate.of(2020, 1, 3), LocalDate.of(2022, 1, 3), 1, person3, "Standard");
+    WiredInternet contract2 = new WiredInternet(2, LocalDate.of(2020, 10, 5), LocalDate.of(2022, 10, 5), 2, person2, 100);
+    DigitalTelevision contract3 = new DigitalTelevision(3, LocalDate.of(2020, 1, 3), LocalDate.of(2022, 1, 3), 3, person3, "Standard");
 
     /*
      * Tests add method
@@ -134,5 +136,16 @@ public class RepositoryTests {
         Assert.assertEquals(0, repository.getIndex(contract1));
         Assert.assertEquals(1, repository.getIndex(contract2));
         Assert.assertEquals(2, repository.getIndex(contract3));
+    }
+
+    /*
+     * Tests read csv file method
+     */
+    @Test
+    public void testReadFile() throws CsvValidationException, IOException {
+        Repository repository = FileTools.readFile("input.csv");
+        Assert.assertEquals(contract1, repository.getById(1, MobileCommunication.class));
+        Assert.assertEquals(contract2, repository.getById(2, WiredInternet.class));
+        Assert.assertEquals(contract3, repository.getById(3, DigitalTelevision.class));
     }
 }
