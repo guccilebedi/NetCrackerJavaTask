@@ -66,9 +66,9 @@ public class RepositoryTests {
         repository.add(contract1);
         repository.add(contract2);
         repository.add(contract3);
-        Assert.assertEquals(contract1, repository.search(Predicates.getDateStartPredicate(LocalDate.of(2021, 1, 3)), MobileCommunication.class));
-        Assert.assertEquals(contract2, repository.search(Predicates.getDateEndPredicate(LocalDate.of(2022, 10, 5)), WiredInternet.class));
-        Assert.assertEquals(contract3, repository.search(Predicates.getOwnersFullNamePredicate("Person3"), DigitalTelevision.class));
+        Assert.assertEquals(contract1, repository.search(SearchingPredicates.getDateStartPredicate(LocalDate.of(2021, 1, 3)), MobileCommunication.class));
+        Assert.assertEquals(contract2, repository.search(SearchingPredicates.getDateEndPredicate(LocalDate.of(2022, 10, 5)), WiredInternet.class));
+        Assert.assertEquals(contract3, repository.search(SearchingPredicates.getOwnersFullNamePredicate("Person3"), DigitalTelevision.class));
     }
 
     /*

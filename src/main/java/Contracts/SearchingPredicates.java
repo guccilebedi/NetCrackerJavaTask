@@ -3,7 +3,7 @@ package Contracts;
 import java.time.LocalDate;
 import java.util.function.Predicate;
 
-public class Predicates {
+public class SearchingPredicates {
     public static Predicate<Contract> getIdPredicate(int id) {
         return contract -> contract.getId() == id;
     }
