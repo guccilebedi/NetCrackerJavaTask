@@ -144,7 +144,7 @@ public class RepositoryTests {
      */
     @Test
     public void testReadFile() throws CsvValidationException, IOException {
-        Repository repository = FileUtils.readFile("input.csv");
+        Repository repository = FileUtils.readFile("src/test/resources/input.csv");
         Assert.assertEquals(contract1, repository.getById(1, MobileCommunication.class));
         Assert.assertEquals(contract2, repository.getById(2, WiredInternet.class));
         Assert.assertEquals(contract3, repository.getById(3, DigitalTelevision.class));
