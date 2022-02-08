@@ -1,4 +1,4 @@
-package Contracts;
+package contracts;
 
 import java.time.LocalDate;
 import java.util.function.Predicate;
@@ -26,5 +26,9 @@ public class SearchingPredicates {
 
     public static Predicate<Contract> getOwnersFullNamePredicate(String fullName) {
         return contract -> contract.getPerson().getFullName().equals(fullName);
+    }
+
+    public static Predicate<Contract> getOwnersIdSeriesNumberPredicate(String idSeriesNumber) {
+        return contract -> contract.getPerson().getIdSeriesNumber().equals(idSeriesNumber);
     }
 }

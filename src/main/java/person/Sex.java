@@ -1,4 +1,4 @@
-package Person;
+package person;
 
 public enum Sex {
     MALE,

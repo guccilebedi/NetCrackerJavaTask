@@ -1,12 +1,10 @@
-package Repository;
+package repository;
 
-import Contracts.Contract;
-import Contracts.DigitalTelevision;
-import Contracts.MobileCommunication;
+import contracts.Contract;
+import contracts.SearchingPredicates;
 
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 public class Repository {
@@ -127,6 +125,31 @@ public class Repository {
         if (size == repository.length) {
             repository = Arrays.copyOf(repository, (int) (repository.length * 1.5 + 1));
         }
+    }
+
+    /*
+     * generateContractId generates an id
+     * for a new contract using the number
+     * of contracts in a repository
+     */
+    public int generateContractId() {
+        return size + 1;
+    }
+
+    /*
+     * generatePersonId generates an equal
+     * to a new contracts id for a new
+     * person or returns an id of a person,
+     * if he already is in a repository
+     *
+     * @idSeriesNumber series and number of persons id to find him in a repository
+     */
+    public int generatePersonId(String idSeriesNumber) {
+        Contract temp = search(SearchingPredicates.getOwnersIdSeriesNumberPredicate(idSeriesNumber), Contract.class);
+        if (temp != null) {
+            return temp.getPerson().getId();
+        }
+        else return generateContractId();
     }
 
     @Override
