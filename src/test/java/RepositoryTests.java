@@ -1,16 +1,18 @@
-import Contracts.*;
-import Person.Person;
-import Person.Sex;
-import Repository.Repository;
-import Sort.BubbleSort;
-import Sort.Comparators;
-import Sort.InsertionSort;
-import Sort.SelectionSort;
-import Utils.FileUtils;
+import contracts.*;
+import person.Person;
+import person.Sex;
+import repository.Repository;
+import sort.BubbleSort;
+import sort.Comparators;
+import sort.InsertionSort;
+import sort.SelectionSort;
+import utils.FileUtils;
 import com.opencsv.exceptions.CsvValidationException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -148,5 +150,20 @@ public class RepositoryTests {
         Assert.assertEquals(contract1, repository.getById(1, MobileCommunication.class));
         Assert.assertEquals(contract2, repository.getById(2, WiredInternet.class));
         Assert.assertEquals(contract3, repository.getById(3, DigitalTelevision.class));
+    }
+
+    /*
+     * Tests validation in read csv file method
+     */
+    @Test
+    public void testValidation() throws CsvValidationException, IOException {
+        Repository repository = FileUtils.readFile("src/test/resources/bad_input.csv");
+        BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/bad_input_validated.csv"));
+        int lines = 0;
+        while (reader.readLine() != null) {
+            lines++;
+        }
+        reader.close();
+        Assert.assertEquals(10, lines);
     }
 }

@@ -1,5 +1,5 @@
-import Person.Person;
-import Person.Sex;
+import person.Person;
+import person.Sex;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,6 +1,6 @@
-package Contracts;
+package contracts;
 
-import Person.Person;
+import person.Person;
 
 import java.time.LocalDate;
 import java.util.Objects;

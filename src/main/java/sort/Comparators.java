@@ -1,6 +1,6 @@
-package Sort;
+package sort;
 
-import Contracts.Contract;
+import contracts.Contract;
 
 import java.util.Comparator;
 

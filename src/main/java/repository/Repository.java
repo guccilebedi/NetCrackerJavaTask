@@ -1,7 +1,7 @@
-package Repository;
+package repository;
 
-import Contracts.Contract;
-import Contracts.SearchingPredicates;
+import contracts.Contract;
+import contracts.SearchingPredicates;
 
 import java.util.Arrays;
 import java.util.Objects;

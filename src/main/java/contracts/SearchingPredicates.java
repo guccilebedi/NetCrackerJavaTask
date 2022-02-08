@@ -1,4 +1,4 @@
-package Contracts;
+package contracts;
 
 import java.time.LocalDate;
 import java.util.function.Predicate;

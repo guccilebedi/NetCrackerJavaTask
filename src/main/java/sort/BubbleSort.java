@@ -1,7 +1,7 @@
-package Sort;
+package sort;
 
-import Contracts.Contract;
-import Repository.Repository;
+import contracts.Contract;
+import repository.Repository;
 
 import java.util.Comparator;
 
