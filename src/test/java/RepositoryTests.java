@@ -1,22 +1,26 @@
-import contracts.*;
-import person.Person;
-import person.Sex;
-import repository.Repository;
-import sort.BubbleSort;
-import sort.Comparators;
-import sort.InsertionSort;
-import sort.SelectionSort;
-import utils.FileUtils;
+import netcracker.danilavlebedev.contracts.DigitalTelevision;
+import netcracker.danilavlebedev.contracts.MobileCommunication;
+import netcracker.danilavlebedev.contracts.SearchingPredicates;
+import netcracker.danilavlebedev.contracts.WiredInternet;
+import netcracker.danilavlebedev.di.Application;
+import netcracker.danilavlebedev.di.ApplicationContext;
+import netcracker.danilavlebedev.person.Person;
+import netcracker.danilavlebedev.person.Sex;
+import netcracker.danilavlebedev.repository.Repository;
+import netcracker.danilavlebedev.sort.*;
+import netcracker.danilavlebedev.utils.FileUtils;
 import com.opencsv.exceptions.CsvValidationException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RepositoryTests {
+    private static final ApplicationContext app = Application.run("netcracker.danilavlebedev", new HashMap<>(Map.of(ISorter.class, SelectionSort.class)));
+    private static Repository repository;
     Person person1 = new Person(1, "Person1", LocalDate.of(2002, 9, 23), Sex.MALE, "2017015203");
     Person person2 = new Person(2, "Person2", LocalDate.of(1988, 1, 1), Sex.FEMALE, "2008331721");
     Person person3 = new Person(3, "Person3", LocalDate.of(2000, 1, 27), Sex.MALE, "2020545239");
@@ -29,7 +33,7 @@ public class RepositoryTests {
      */
     @Test
     public void testAdd() {
-        Repository repository = new Repository();
+        repository = app.getObject(Repository.class);
         repository.add(contract1);
         repository.add(contract2);
         repository.add(contract3);
@@ -41,7 +45,7 @@ public class RepositoryTests {
      */
     @Test
     public void testSizeExtension() {
-        Repository repository = new Repository();
+        repository = app.getObject(Repository.class);
         for (int i = 0; i < 20; i++) {
             repository.add(contract1);
         }
@@ -53,7 +57,7 @@ public class RepositoryTests {
      */
     @Test
     public void testGetById() {
-        Repository repository = new Repository();
+        repository = app.getObject(Repository.class);
         repository.add(contract1);
         repository.add(contract2);
         repository.add(contract3);
@@ -67,7 +71,7 @@ public class RepositoryTests {
      */
     @Test
     public void testSearch() {
-        Repository repository = new Repository();
+        repository = app.getObject(Repository.class);
         repository.add(contract1);
         repository.add(contract2);
         repository.add(contract3);
@@ -81,7 +85,7 @@ public class RepositoryTests {
      */
     @Test
     public void testRemove() {
-        Repository repository = new Repository();
+        repository = app.getObject(Repository.class);
         repository.add(contract1);
         repository.add(contract2);
         repository.add(contract3);
@@ -98,8 +102,8 @@ public class RepositoryTests {
      */
     @Test
     public void testBubbleSort() {
+        repository = app.getObject(Repository.class);
         BubbleSort bubbleSort = new BubbleSort();
-        Repository repository = new Repository();
         repository.add(contract3);
         repository.add(contract2);
         repository.add(contract1);
@@ -114,8 +118,8 @@ public class RepositoryTests {
      */
     @Test
     public void testInsertionSort() {
+        repository = app.getObject(Repository.class);
         InsertionSort insertionSort = new InsertionSort();
-        Repository repository = new Repository();
         repository.add(contract1);
         repository.add(contract2);
         repository.add(contract3);
@@ -130,8 +134,8 @@ public class RepositoryTests {
      */
     @Test
     public void testSelectionSort() {
+        repository = app.getObject(Repository.class);
         SelectionSort selectionSort = new SelectionSort();
-        Repository repository = new Repository();
         repository.add(contract3);
         repository.add(contract2);
         repository.add(contract1);
@@ -146,6 +150,7 @@ public class RepositoryTests {
      */
     @Test
     public void testReadFile() throws CsvValidationException, IOException {
+        repository = app.getObject(Repository.class);
         FileUtils fileUtils = new FileUtils();
         Repository repository = fileUtils.readFile("src/test/resources/input.csv");
         Assert.assertEquals(contract1, repository.getById(1, MobileCommunication.class));
@@ -158,8 +163,24 @@ public class RepositoryTests {
      */
     @Test
     public void testValidation() throws CsvValidationException, IOException {
-        FileUtils fileUtils = new FileUtils();
-        Repository repository = fileUtils.readFile("src/test/resources/bad_input.csv");
+        repository = app.getObject(FileUtils.class).readFile("src/test/resources/bad_input.csv");
         Assert.assertEquals(0, repository.getSize());
+        repository = app.getObject(FileUtils.class).readFile("src/test/resources/input.csv");
+        Assert.assertEquals(3, repository.getSize());
+    }
+
+    /*
+     * Tests sorting with DI
+     */
+    @Test
+    public void testDISort() {
+        repository = app.getObject(Repository.class);
+        repository.add(contract3);
+        repository.add(contract2);
+        repository.add(contract1);
+        repository.sort(Comparators.getOwnersFullNameComparator());
+        Assert.assertEquals(0, repository.getIndex(contract1));
+        Assert.assertEquals(1, repository.getIndex(contract2));
+        Assert.assertEquals(2, repository.getIndex(contract3));
     }
 }
