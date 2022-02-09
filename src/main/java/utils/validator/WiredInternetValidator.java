@@ -1,6 +1,7 @@
 package utils.validator;
 
 import contracts.Contract;
+import contracts.DigitalTelevision;
 import contracts.WiredInternet;
 
 public class WiredInternetValidator implements Validator {
@@ -15,12 +16,14 @@ public class WiredInternetValidator implements Validator {
      */
     @Override
     public ValidationResult validate(Contract contract, ValidationResult validationResult) {
-        WiredInternet wiredInternet = (WiredInternet) contract;
-        if (wiredInternet.getSpeed() <= 0) {
-            if (validationResult.getStatus() != ValidationStatus.ERROR) {
-                validationResult.setStatus(ValidationStatus.RISK);
+        if (contract.getClass().equals(WiredInternet.class)) {
+            WiredInternet wiredInternet = (WiredInternet) contract;
+            if (wiredInternet.getSpeed() <= 0) {
+                if (validationResult.getStatus() != ValidationStatus.ERROR) {
+                    validationResult.setStatus(ValidationStatus.RISK);
+                }
+                validationResult.setErrors("Invalid speed!");
             }
-            validationResult.setErrors("Invalid speed!");
         }
         return validationResult;
     }

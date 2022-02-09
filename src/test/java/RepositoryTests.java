@@ -146,7 +146,8 @@ public class RepositoryTests {
      */
     @Test
     public void testReadFile() throws CsvValidationException, IOException {
-        Repository repository = FileUtils.readFile("src/test/resources/input.csv");
+        FileUtils fileUtils = new FileUtils();
+        Repository repository = fileUtils.readFile("src/test/resources/input.csv");
         Assert.assertEquals(contract1, repository.getById(1, MobileCommunication.class));
         Assert.assertEquals(contract2, repository.getById(2, WiredInternet.class));
         Assert.assertEquals(contract3, repository.getById(3, DigitalTelevision.class));
@@ -157,13 +158,8 @@ public class RepositoryTests {
      */
     @Test
     public void testValidation() throws CsvValidationException, IOException {
-        Repository repository = FileUtils.readFile("src/test/resources/bad_input.csv");
-        BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/bad_input_validated.csv"));
-        int lines = 0;
-        while (reader.readLine() != null) {
-            lines++;
-        }
-        reader.close();
-        Assert.assertEquals(10, lines);
+        FileUtils fileUtils = new FileUtils();
+        Repository repository = fileUtils.readFile("src/test/resources/bad_input.csv");
+        Assert.assertEquals(0, repository.getSize());
     }
 }

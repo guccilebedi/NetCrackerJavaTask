@@ -1,6 +1,7 @@
 package utils.validator;
 
 import contracts.Contract;
+import contracts.DigitalTelevision;
 import contracts.MobileCommunication;
 
 public class MobileCommunicationValidator implements Validator {
@@ -15,24 +16,26 @@ public class MobileCommunicationValidator implements Validator {
      */
     @Override
     public ValidationResult validate(Contract contract, ValidationResult validationResult) {
-        MobileCommunication mobileCommunication = (MobileCommunication) contract;
-        if (mobileCommunication.getMinutes() <= 0) {
-            if (validationResult.getStatus() != ValidationStatus.ERROR) {
-                validationResult.setStatus(ValidationStatus.RISK);
+        if (contract.getClass().equals(MobileCommunication.class)) {
+            MobileCommunication mobileCommunication = (MobileCommunication) contract;
+            if (mobileCommunication.getMinutes() <= 0) {
+                if (validationResult.getStatus() != ValidationStatus.ERROR) {
+                    validationResult.setStatus(ValidationStatus.RISK);
+                }
+                validationResult.setErrors("Invalid minutes number!");
             }
-            validationResult.setErrors("Invalid minutes number!");
-        }
-        if (mobileCommunication.getMessages() <= 0) {
-            if (validationResult.getStatus() != ValidationStatus.ERROR) {
-                validationResult.setStatus(ValidationStatus.RISK);
+            if (mobileCommunication.getMessages() <= 0) {
+                if (validationResult.getStatus() != ValidationStatus.ERROR) {
+                    validationResult.setStatus(ValidationStatus.RISK);
+                }
+                validationResult.setErrors("Invalid messages number!");
             }
-            validationResult.setErrors("Invalid messages number!");
-        }
-        if (mobileCommunication.getGigabytes() <= 0) {
-            if (validationResult.getStatus() != ValidationStatus.ERROR) {
-                validationResult.setStatus(ValidationStatus.RISK);
+            if (mobileCommunication.getGigabytes() <= 0) {
+                if (validationResult.getStatus() != ValidationStatus.ERROR) {
+                    validationResult.setStatus(ValidationStatus.RISK);
+                }
+                validationResult.setErrors("Invalid gigabytes number!");
             }
-            validationResult.setErrors("Invalid gigabytes number!");
         }
         return validationResult;
     }
