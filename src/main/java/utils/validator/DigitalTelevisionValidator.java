@@ -15,12 +15,14 @@ public class DigitalTelevisionValidator implements Validator {
      */
     @Override
     public ValidationResult validate(Contract contract, ValidationResult validationResult) {
-        DigitalTelevision digitalTelevision = (DigitalTelevision) contract;
-        if (digitalTelevision.getChannelPackage() == null) {
-            if (validationResult.getStatus() != ValidationStatus.ERROR) {
-                validationResult.setStatus(ValidationStatus.RISK);
+        if (contract.getClass().equals(DigitalTelevision.class)) {
+            DigitalTelevision digitalTelevision = (DigitalTelevision) contract;
+            if (digitalTelevision.getChannelPackage() == null) {
+                if (validationResult.getStatus() != ValidationStatus.ERROR) {
+                    validationResult.setStatus(ValidationStatus.RISK);
+                }
+                validationResult.setErrors("Invalid channel package name!");
             }
-            validationResult.setErrors("Invalid channel package name!");
         }
         return validationResult;
     }

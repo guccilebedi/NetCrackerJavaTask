@@ -1,5 +1,6 @@
 package utils;
 
+import contracts.Contract;
 import contracts.DigitalTelevision;
 import contracts.MobileCommunication;
 import contracts.WiredInternet;
@@ -17,10 +18,21 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class FileUtils {
+    private static List<Validator> validators = new ArrayList<>();
+
+    public FileUtils() {
+        validators.add(new ContractValidator());
+        validators.add(new DigitalTelevisionValidator());
+        validators.add(new MobileCommunicationValidator());
+        validators.add(new WiredInternetValidator());
+    }
+
     /*
      * readFile method reads csv file into
      * a repository using opencsv
@@ -28,16 +40,12 @@ public class FileUtils {
      * @param fileName name of a file to read
      * @return repository the result repository
      */
-    public static Repository readFile(String fileName) throws IOException, CsvValidationException {
+    public Repository readFile(String fileName) throws IOException, CsvValidationException {
         Repository repository = new Repository();
         CSVReader csvReader = new CSVReader(new FileReader(fileName));
         String[] temp = fileName.split("\\.");
         CSVWriter csvWriter = new CSVWriter(new FileWriter(temp[temp.length - 2] + "_validated." + temp[temp.length - 1]));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        ContractValidator contractValidator = new ContractValidator();
-        DigitalTelevisionValidator digitalTelevisionValidator = new DigitalTelevisionValidator();
-        MobileCommunicationValidator mobileCommunicationValidator = new MobileCommunicationValidator();
-        WiredInternetValidator wiredInternetValidator = new WiredInternetValidator();
         String[] line;
         while ((line = csvReader.readNext()) != null) {
             line = line[0].split(";");
@@ -79,10 +87,12 @@ public class FileUtils {
                 } else {
                     digitalTelevision = new DigitalTelevision(repository.generateContractId(), dateStart, dateEnd, contractNumber, person, null);
                 }
-                repository.add(digitalTelevision);
-                ValidationResult validationResult = contractValidator.validate(digitalTelevision, new ValidationResult());
-                validationResult = digitalTelevisionValidator.validate(digitalTelevision, validationResult);
-                csvWriter.writeAll(Collections.singleton(new String[]{Arrays.toString(line), String.valueOf(validationResult.getErrors())}));
+                ValidationResult validationResult = validate(digitalTelevision);
+                if (validationResult.getStatus() == ValidationStatus.OK) {
+                    repository.add(digitalTelevision);
+                } else {
+                    csvWriter.writeAll(Collections.singleton(new String[]{Arrays.toString(line), String.valueOf(validationResult.getErrors())}));
+                }
             } else if (line[7].equals("Mobile")) {
                 MobileCommunication mobileCommunication;
                 if (line.length == 11) {
@@ -108,10 +118,12 @@ public class FileUtils {
                 } else {
                     mobileCommunication = new MobileCommunication(repository.generateContractId(), dateStart, dateEnd, contractNumber, person, 0, 0, 0);
                 }
-                repository.add(mobileCommunication);
-                ValidationResult validationResult = contractValidator.validate(mobileCommunication, new ValidationResult());
-                validationResult = mobileCommunicationValidator.validate(mobileCommunication, validationResult);
-                csvWriter.writeAll(Collections.singleton(new String[]{Arrays.toString(line), String.valueOf(validationResult.getErrors())}));
+                ValidationResult validationResult = validate(mobileCommunication);
+                if (validationResult.getStatus() == ValidationStatus.OK) {
+                    repository.add(mobileCommunication);
+                } else {
+                    csvWriter.writeAll(Collections.singleton(new String[]{Arrays.toString(line), String.valueOf(validationResult.getErrors())}));
+                }
             } else {
                 WiredInternet wiredInternet;
                 if (line.length == 9) {
@@ -125,13 +137,23 @@ public class FileUtils {
                 } else {
                     wiredInternet = new WiredInternet(repository.generateContractId(), dateStart, dateEnd, contractNumber, person, 0);
                 }
-                repository.add(wiredInternet);
-                ValidationResult validationResult = contractValidator.validate(wiredInternet, new ValidationResult());
-                validationResult = wiredInternetValidator.validate(wiredInternet, validationResult);
-                csvWriter.writeAll(Collections.singleton(new String[]{Arrays.toString(line), String.valueOf(validationResult.getErrors())}));
+                ValidationResult validationResult = validate(wiredInternet);
+                if (validationResult.getStatus() == ValidationStatus.OK) {
+                    repository.add(wiredInternet);
+                } else {
+                    csvWriter.writeAll(Collections.singleton(new String[]{Arrays.toString(line), String.valueOf(validationResult.getErrors())}));
+                }
             }
         }
         csvWriter.close();
         return repository;
+    }
+
+    public static ValidationResult validate(Contract contract) {
+        ValidationResult validationResult = new ValidationResult();
+        for (Validator validator : validators) {
+            validator.validate(contract, validationResult);
+        }
+        return validationResult;
     }
 }
