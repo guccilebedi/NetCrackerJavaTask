@@ -25,8 +25,13 @@ public class DBUtils {
         getPerson.setInt(1, id);
         try {
             ResultSet personSet = getPerson.executeQuery();
-            personSet.next();
-            return new Person(personSet.getInt("id"), personSet.getString("full_name"), personSet.getDate("date_of_birth").toLocalDate(), Objects.equals(personSet.getString("sex"), "Male") ? Sex.MALE : Sex.FEMALE, personSet.getString("id_series_number"));
+            if (!personSet.next()) {
+                return null;
+            }
+            Person person = new Person(personSet.getInt("id"), personSet.getString("full_name"), personSet.getDate("date_of_birth").toLocalDate(), Objects.equals(personSet.getString("sex"), "Male") ? Sex.MALE : Sex.FEMALE, personSet.getString("id_series_number"));
+            personSet.close();
+            getPerson.close();
+            return person;
         } catch (SQLException e) {
             System.err.println("Error with getting person with id = " + id + "!");
             return null;
@@ -52,6 +57,8 @@ public class DBUtils {
                 System.err.println("No person was found by id = " + personId + " given in this contract!");
                 return null;
             }
+            contractSet.close();
+            getContractById.close();
             if (Objects.equals(type, "Television")) {
                 return new DigitalTelevision(id, dateStart, dateEnd, number, person, properties[0]);
             } else if (Objects.equals(type, "Mobile")) {
@@ -113,8 +120,11 @@ public class DBUtils {
                         repository.add(new WiredInternet(id, dateStart, dateEnd, number, person, Integer.parseInt(properties[0])), false);
                     }
                 }
+                contractsSet.close();
                 counter += maximumAmount;
             }
+            contractsCount.close();
+            getContracts.close();
             connection.close();
             return repository;
         } catch (SQLException e) {
@@ -132,6 +142,7 @@ public class DBUtils {
         addPerson.setString(5, person.getIdSeriesNumber());
         try {
             addPerson.executeUpdate();
+            addPerson.close();
             return true;
         } catch (SQLException e) {
             System.err.println("Error while adding person + " + person + "!");
@@ -143,7 +154,7 @@ public class DBUtils {
         try {
             Connection connection = DBConnector.connect();
             if (getContractById(contract.getId(), connection) != null) {
-                System.err.println("Contract with id = " + contract.getId() + "already exists!");
+                System.err.println("Contract with id = " + contract.getId() + " already exists!");
                 return;
             }
             if (getPerson(contract.getPerson().getId(), connection) == null) {
@@ -161,6 +172,7 @@ public class DBUtils {
             addContract.setString(6, contract.getClass() == DigitalTelevision.class ? "Television" : contract.getClass() == MobileCommunication.class ? "Mobile" : "Internet");
             addContract.setString(7, contract.getClass() == DigitalTelevision.class ? ((DigitalTelevision) contract).getChannelPackage() : contract.getClass() == MobileCommunication.class ? ((MobileCommunication) contract).getMinutes() + ";" + ((MobileCommunication) contract).getMessages() + ";" + ((MobileCommunication) contract).getGigabytes() + ";" : String.valueOf(((WiredInternet) contract).getSpeed()));
             addContract.executeUpdate();
+            addContract.close();
             connection.close();
         } catch (SQLException e) {
             System.err.println("Error while adding contract " + contract + "!");
@@ -172,6 +184,7 @@ public class DBUtils {
         deletePerson.setInt(1, id);
         try {
             deletePerson.executeUpdate();
+            deletePerson.close();
         } catch (SQLException e) {
             System.err.println("Error while deleting person with id = " + id + "!");
         }
@@ -184,16 +197,19 @@ public class DBUtils {
             if (contract == null) {
                 return;
             }
+            PreparedStatement deleteContract = connection.prepareStatement(DBQueries.deleteContract());
+            deleteContract.setInt(1, id);
+            deleteContract.executeUpdate();
             PreparedStatement getContractsCountByPersonsId = connection.prepareStatement(DBQueries.getContractsCountByPersonsId());
             getContractsCountByPersonsId.setInt(1, contract.getPerson().getId());
             ResultSet contractsCountByPersonsId = getContractsCountByPersonsId.executeQuery();
             contractsCountByPersonsId.next();
-            PreparedStatement deleteContract = connection.prepareStatement(DBQueries.deleteContract());
-            deleteContract.setInt(1, id);
-            deleteContract.executeUpdate();
             if (contractsCountByPersonsId.getInt(1) == 0) {
                 deletePerson(contract.getPerson().getId(), connection);
             }
+            contractsCountByPersonsId.close();
+            getContractsCountByPersonsId.close();
+            deleteContract.close();
             connection.close();
         } catch (SQLException e) {
             System.err.println("Error while deleting contract with id = " + id + "!");

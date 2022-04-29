@@ -99,7 +99,7 @@ public class Repository {
      *
      * @param id id of a contract which is needed to be removed
      */
-    public void remove(int id) {
+    public void remove(int id, boolean removeFromDB) {
         for (int i = 0; i < size + 1; i++) {
             if (repository[i].getId() == id) {
                 int j = i;
@@ -111,7 +111,9 @@ public class Repository {
                 break;
             }
         }
-        DBUtils.deleteContract(id);
+        if (removeFromDB) {
+            DBUtils.deleteContract(id);
+        }
     }
 
     public int getSize() {

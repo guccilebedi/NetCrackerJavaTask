@@ -91,11 +91,11 @@ public class RepositoryTests {
         repository.add(contract1, false);
         repository.add(contract2, false);
         repository.add(contract3, false);
-        repository.remove(1);
+        repository.remove(1, false);
         Assert.assertNull(repository.getById(1, MobileCommunication.class));
-        repository.remove(2);
+        repository.remove(2, false);
         Assert.assertNull(repository.getById(2, WiredInternet.class));
-        repository.remove(3);
+        repository.remove(3, false);
         Assert.assertNull(repository.getById(3, DigitalTelevision.class));
     }
 
@@ -224,11 +224,11 @@ public class RepositoryTests {
         app.getObject(DBUtils.class);
         repository = DBUtils.getRepository(20);
         assert repository != null;
-        repository.remove(1);
+        repository.remove(1, true);
         Assert.assertEquals(repository, DBUtils.getRepository(20));
-        repository.remove(2);
+        repository.remove(2, true);
         Assert.assertEquals(repository, DBUtils.getRepository(20));
-        repository.remove(3);
+        repository.remove(3, true);
         Assert.assertEquals(repository, DBUtils.getRepository(20));
     }
 }
