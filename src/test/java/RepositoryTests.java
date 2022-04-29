@@ -8,12 +8,14 @@ import netcracker.danilavlebedev.person.Person;
 import netcracker.danilavlebedev.person.Sex;
 import netcracker.danilavlebedev.repository.Repository;
 import netcracker.danilavlebedev.sort.*;
+import netcracker.danilavlebedev.utils.DBUtils;
 import netcracker.danilavlebedev.utils.FileUtils;
 import com.opencsv.exceptions.CsvValidationException;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,9 +36,9 @@ public class RepositoryTests {
     @Test
     public void testAdd() {
         repository = app.getObject(Repository.class);
-        repository.add(contract1);
-        repository.add(contract2);
-        repository.add(contract3);
+        repository.add(contract1, false);
+        repository.add(contract2, false);
+        repository.add(contract3, false);
         Assert.assertEquals(3, repository.getSize());
     }
 
@@ -47,7 +49,7 @@ public class RepositoryTests {
     public void testSizeExtension() {
         repository = app.getObject(Repository.class);
         for (int i = 0; i < 20; i++) {
-            repository.add(contract1);
+            repository.add(contract1, false);
         }
         Assert.assertEquals(20, repository.getSize());
     }
@@ -58,9 +60,9 @@ public class RepositoryTests {
     @Test
     public void testGetById() {
         repository = app.getObject(Repository.class);
-        repository.add(contract1);
-        repository.add(contract2);
-        repository.add(contract3);
+        repository.add(contract1, false);
+        repository.add(contract2, false);
+        repository.add(contract3, false);
         Assert.assertEquals(contract1, repository.getById(1, MobileCommunication.class));
         Assert.assertEquals(contract2, repository.getById(2, WiredInternet.class));
         Assert.assertEquals(contract3, repository.getById(3, DigitalTelevision.class));
@@ -72,9 +74,9 @@ public class RepositoryTests {
     @Test
     public void testSearch() {
         repository = app.getObject(Repository.class);
-        repository.add(contract1);
-        repository.add(contract2);
-        repository.add(contract3);
+        repository.add(contract1, false);
+        repository.add(contract2, false);
+        repository.add(contract3, false);
         Assert.assertEquals(contract1, repository.search(SearchingPredicates.getDateStartPredicate(LocalDate.of(2021, 1, 3)), MobileCommunication.class));
         Assert.assertEquals(contract2, repository.search(SearchingPredicates.getDateEndPredicate(LocalDate.of(2022, 10, 5)), WiredInternet.class));
         Assert.assertEquals(contract3, repository.search(SearchingPredicates.getOwnersFullNamePredicate("Person3"), DigitalTelevision.class));
@@ -86,9 +88,9 @@ public class RepositoryTests {
     @Test
     public void testRemove() {
         repository = app.getObject(Repository.class);
-        repository.add(contract1);
-        repository.add(contract2);
-        repository.add(contract3);
+        repository.add(contract1, false);
+        repository.add(contract2, false);
+        repository.add(contract3, false);
         repository.remove(1);
         Assert.assertNull(repository.getById(1, MobileCommunication.class));
         repository.remove(2);
@@ -104,9 +106,9 @@ public class RepositoryTests {
     public void testBubbleSort() {
         repository = app.getObject(Repository.class);
         BubbleSort bubbleSort = new BubbleSort();
-        repository.add(contract3);
-        repository.add(contract2);
-        repository.add(contract1);
+        repository.add(contract3, false);
+        repository.add(contract2, false);
+        repository.add(contract1, false);
         bubbleSort.sort(repository, Comparators.getIdComparator());
         Assert.assertEquals(0, repository.getIndex(contract1));
         Assert.assertEquals(1, repository.getIndex(contract2));
@@ -120,9 +122,9 @@ public class RepositoryTests {
     public void testInsertionSort() {
         repository = app.getObject(Repository.class);
         InsertionSort insertionSort = new InsertionSort();
-        repository.add(contract1);
-        repository.add(contract2);
-        repository.add(contract3);
+        repository.add(contract1, false);
+        repository.add(contract2, false);
+        repository.add(contract3, false);
         insertionSort.sort(repository, Comparators.getDateStartComparator());
         Assert.assertEquals(2, repository.getIndex(contract1));
         Assert.assertEquals(1, repository.getIndex(contract2));
@@ -136,9 +138,9 @@ public class RepositoryTests {
     public void testSelectionSort() {
         repository = app.getObject(Repository.class);
         SelectionSort selectionSort = new SelectionSort();
-        repository.add(contract3);
-        repository.add(contract2);
-        repository.add(contract1);
+        repository.add(contract3, false);
+        repository.add(contract2, false);
+        repository.add(contract1, false);
         selectionSort.sort(repository, Comparators.getOwnersFullNameComparator());
         Assert.assertEquals(0, repository.getIndex(contract1));
         Assert.assertEquals(1, repository.getIndex(contract2));
@@ -175,12 +177,58 @@ public class RepositoryTests {
     @Test
     public void testDISort() {
         repository = app.getObject(Repository.class);
-        repository.add(contract3);
-        repository.add(contract2);
-        repository.add(contract1);
+        repository.add(contract3, false);
+        repository.add(contract2, false);
+        repository.add(contract1, false);
         repository.sort(Comparators.getOwnersFullNameComparator());
         Assert.assertEquals(0, repository.getIndex(contract1));
         Assert.assertEquals(1, repository.getIndex(contract2));
         Assert.assertEquals(2, repository.getIndex(contract3));
+    }
+
+    /*
+     * Tests adding contracts to db
+     */
+    @Test
+    public void testDBAdd() {
+        repository = app.getObject(Repository.class);
+        repository.add(contract1, true);
+        repository.add(contract2, true);
+        repository.add(contract3, true);
+        app.getObject(DBUtils.class);
+        Repository repositoryTemp = DBUtils.getRepository(20);
+        assert repositoryTemp != null;
+        Assert.assertEquals(repository.getIndex(contract1), repositoryTemp.getIndex(contract1));
+        Assert.assertEquals(repository.getIndex(contract2), repositoryTemp.getIndex(contract2));
+        Assert.assertEquals(repository.getIndex(contract3), repositoryTemp.getIndex(contract3));
+    }
+
+    /*
+     * Tests getting contracts from db
+     */
+    @Test
+    public void testDBGet() {
+        app.getObject(DBUtils.class);
+        repository = DBUtils.getRepository(20);
+        assert repository != null;
+        Assert.assertEquals(0, repository.getIndex(contract1));
+        Assert.assertEquals(1, repository.getIndex(contract2));
+        Assert.assertEquals(2, repository.getIndex(contract3));
+    }
+
+    /*
+     * Tests deleting contracts from db
+     */
+    @Test
+    public void testDBDelete() {
+        app.getObject(DBUtils.class);
+        repository = DBUtils.getRepository(20);
+        assert repository != null;
+        repository.remove(1);
+        Assert.assertEquals(repository, DBUtils.getRepository(20));
+        repository.remove(2);
+        Assert.assertEquals(repository, DBUtils.getRepository(20));
+        repository.remove(3);
+        Assert.assertEquals(repository, DBUtils.getRepository(20));
     }
 }
