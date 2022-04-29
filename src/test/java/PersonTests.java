@@ -1,5 +1,5 @@
-import person.Person;
-import person.Sex;
+import netcracker.danilavlebedev.person.Person;
+import netcracker.danilavlebedev.person.Sex;
 import org.junit.Assert;
 import org.junit.Test;
 
