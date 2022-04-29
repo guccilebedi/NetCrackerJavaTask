@@ -2,8 +2,10 @@ package netcracker.danilavlebedev.repository;
 
 import netcracker.danilavlebedev.contracts.Contract;
 import netcracker.danilavlebedev.contracts.SearchingPredicates;
+import netcracker.danilavlebedev.db.DBQueries;
 import netcracker.danilavlebedev.di.Autowired;
 import netcracker.danilavlebedev.sort.ISorter;
+import netcracker.danilavlebedev.utils.DBUtils;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -26,15 +28,18 @@ public class Repository {
 
     /*
      * add method, after checking if the size is full,
-     * adds new contract to the last cell of a repository
-     * and increases @param size
+     * adds new contract to the last cell of a repository,
+     * adds it to db if needed and increases @param size
      *
      * @param contract contract to add
      */
-    public void add(Contract contract) {
+    public void add(Contract contract, boolean addToDB) {
         extendSize();
         repository[size] = contract;
         size++;
+        if (addToDB) {
+            DBUtils.addContract(contract);
+        }
     }
 
     /*
@@ -106,6 +111,7 @@ public class Repository {
                 break;
             }
         }
+        DBUtils.deleteContract(id);
     }
 
     public int getSize() {

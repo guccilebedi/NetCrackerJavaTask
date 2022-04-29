@@ -89,7 +89,7 @@ public class FileUtils {
                 }
                 ValidationResult validationResult = validate(digitalTelevision);
                 if (validationResult.getStatus() == ValidationStatus.OK) {
-                    repository.add(digitalTelevision);
+                    repository.add(digitalTelevision, false);
                 } else {
                     csvWriter.writeAll(Collections.singleton(new String[]{Arrays.toString(line), String.valueOf(validationResult.getErrors())}));
                 }
@@ -120,7 +120,7 @@ public class FileUtils {
                 }
                 ValidationResult validationResult = validate(mobileCommunication);
                 if (validationResult.getStatus() == ValidationStatus.OK) {
-                    repository.add(mobileCommunication);
+                    repository.add(mobileCommunication, false);
                 } else {
                     csvWriter.writeAll(Collections.singleton(new String[]{Arrays.toString(line), String.valueOf(validationResult.getErrors())}));
                 }
@@ -139,7 +139,7 @@ public class FileUtils {
                 }
                 ValidationResult validationResult = validate(wiredInternet);
                 if (validationResult.getStatus() == ValidationStatus.OK) {
-                    repository.add(wiredInternet);
+                    repository.add(wiredInternet, false);
                 } else {
                     csvWriter.writeAll(Collections.singleton(new String[]{Arrays.toString(line), String.valueOf(validationResult.getErrors())}));
                 }
