@@ -35,6 +35,17 @@
             <artifactId>postgresql</artifactId>
             <version>42.3.4</version>
         </dependency>
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>3.0.2</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
     <properties>
         <maven.compiler.source>16</maven.compiler.source>

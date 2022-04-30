@@ -1,19 +1,34 @@
 package netcracker.danilavlebedev.contracts;
 
+import jakarta.xml.bind.annotation.*;
 import netcracker.danilavlebedev.person.Person;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "mobileCommunication", propOrder = {
+        "minutes",
+        "messages",
+        "gigabytes"
+})
 public class MobileCommunication extends Contract {
     /*
      * @param minutes amount of minutes that a tariff offers
      * @param messages amount of SMS messages that a tariff offers
      * @param gigabytes amount of gigabytes that a tariff offers
      */
+    @XmlElement(required = true)
     private int minutes;
+    @XmlElement(required = true)
     private int messages;
+    @XmlElement(required = true)
     private int gigabytes;
+
+    public MobileCommunication() {
+
+    }
 
     public MobileCommunication(int id, LocalDate dateStart, LocalDate dateEnd, int number, Person person, int minutes, int messages, int gigabytes) {
         super(id, dateStart, dateEnd, number, person);

@@ -1,15 +1,24 @@
 package netcracker.danilavlebedev.contracts;
 
+import jakarta.xml.bind.annotation.*;
 import netcracker.danilavlebedev.person.Person;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "wiredInternet")
 public class WiredInternet extends Contract {
     /*
      * @param speed highest internet speed that a tariff offers
      */
+    @XmlElement(required = true)
     private int speed;
+
+    public WiredInternet() {
+
+    }
 
     public WiredInternet(int id, LocalDate dateStart, LocalDate dateEnd, int number, Person person, int speed) {
         super(id, dateStart, dateEnd, number, person);

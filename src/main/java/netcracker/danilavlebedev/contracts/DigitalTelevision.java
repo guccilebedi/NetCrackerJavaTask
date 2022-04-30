@@ -1,15 +1,24 @@
 package netcracker.danilavlebedev.contracts;
 
+import jakarta.xml.bind.annotation.*;
 import netcracker.danilavlebedev.person.Person;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "digitalTelevision")
 public class DigitalTelevision extends Contract {
     /*
      * @param channelPackage type of channel package
      */
+    @XmlElement(required = true)
     private String channelPackage;
+
+    public DigitalTelevision() {
+
+    }
 
     public DigitalTelevision(int id, LocalDate dateStart, LocalDate dateEnd, int number, Person person, String channelPackage) {
         super(id, dateStart, dateEnd, number, person);

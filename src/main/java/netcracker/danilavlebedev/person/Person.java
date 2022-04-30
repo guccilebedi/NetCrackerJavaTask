@@ -1,9 +1,21 @@
 package netcracker.danilavlebedev.person;
 
+import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import netcracker.danilavlebedev.utils.jaxb.LocalDateAdapter;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Objects;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = {
+        "fullName",
+        "dateOfBirth",
+        "sex",
+        "idSeriesNumber"
+})
 public class Person {
     /*
      * @param id persons id
@@ -13,11 +25,21 @@ public class Person {
      * @param idSeries series of persons id
      * @param idNumber number of persons id
      */
+    @XmlAttribute(required = true)
     private int id;
+    @XmlElement(required = true)
     private String fullName;
+    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
+    @XmlElement(required = true)
     private LocalDate dateOfBirth;
+    @XmlElement(required = true)
     private Sex sex;
+    @XmlElement(required = true)
     private String idSeriesNumber;
+
+    public Person() {
+
+    }
 
     public Person(int id, String fullName, LocalDate dateOfBirth, Sex sex, String idSeriesNumber) {
         this.id = id;

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<repository>
+    <contract xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="mobileCommunication" id="1">
+        <dateStart>2021-01-03</dateStart>
+        <dateEnd>2022-01-03</dateEnd>
+        <number>1</number>
+        <person id="1">
+            <fullName>Person1</fullName>
+            <dateOfBirth>2002-09-23</dateOfBirth>
+            <sex>MALE</sex>
+            <idSeriesNumber>2017015203</idSeriesNumber>
+        </person>
+        <minutes>400</minutes>
+        <messages>400</messages>
+        <gigabytes>40</gigabytes>
+    </contract>
+    <contract xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="wiredInternet" id="2">
+        <dateStart>2020-10-05</dateStart>
+        <dateEnd>2022-10-05</dateEnd>
+        <number>2</number>
+        <person id="2">
+            <fullName>Person2</fullName>
+            <dateOfBirth>1988-01-01</dateOfBirth>
+            <sex>FEMALE</sex>
+            <idSeriesNumber>2008331721</idSeriesNumber>
+        </person>
+        <speed>100</speed>
+    </contract>
+    <contract xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="digitalTelevision" id="3">
+        <dateStart>2020-01-03</dateStart>
+        <dateEnd>2022-01-03</dateEnd>
+        <number>3</number>
+        <person id="3">
+            <fullName>Person3</fullName>
+            <dateOfBirth>2000-01-27</dateOfBirth>
+            <sex>MALE</sex>
+            <idSeriesNumber>2020545239</idSeriesNumber>
+        </person>
+        <channelPackage>Standard</channelPackage>
+    </contract>
+    <size>3</size>
+</repository>

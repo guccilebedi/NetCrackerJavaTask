@@ -1,10 +1,22 @@
 package netcracker.danilavlebedev.contracts;
 
+import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import netcracker.danilavlebedev.person.Person;
+import netcracker.danilavlebedev.utils.jaxb.LocalDateAdapter;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso({DigitalTelevision.class, MobileCommunication.class, WiredInternet.class})
+@XmlType(name = "contract", propOrder = {
+        "dateStart",
+        "dateEnd",
+        "number",
+        "person"
+})
 public abstract class Contract {
     /*
      * @param id contracts id
@@ -13,11 +25,22 @@ public abstract class Contract {
      * @param number contracts number
      * @param person person, who has signed the contract
      */
+    @XmlAttribute(required = true)
     private int id;
+    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
+    @XmlElement(required = true)
     private LocalDate dateStart;
+    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
+    @XmlElement(required = true)
     private LocalDate dateEnd;
+    @XmlElement(required = true)
     private int number;
+    @XmlElement(required = true)
     private Person person;
+
+    public Contract() {
+
+    }
 
     public Contract(int id, LocalDate dateStart, LocalDate dateEnd, int number, Person person) {
         this.id = id;

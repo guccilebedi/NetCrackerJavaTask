@@ -1,3 +1,4 @@
+import jakarta.xml.bind.JAXBException;
 import netcracker.danilavlebedev.contracts.DigitalTelevision;
 import netcracker.danilavlebedev.contracts.MobileCommunication;
 import netcracker.danilavlebedev.contracts.SearchingPredicates;
@@ -11,6 +12,7 @@ import netcracker.danilavlebedev.sort.*;
 import netcracker.danilavlebedev.utils.DBUtils;
 import netcracker.danilavlebedev.utils.FileUtils;
 import com.opencsv.exceptions.CsvValidationException;
+import netcracker.danilavlebedev.utils.jaxb.JAXBUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -230,5 +232,18 @@ public class RepositoryTests {
         Assert.assertEquals(repository, DBUtils.getRepository(20));
         repository.remove(3, true);
         Assert.assertEquals(repository, DBUtils.getRepository(20));
+    }
+
+    @Test
+    public void testJAXB() throws JAXBException {
+        repository = app.getObject(Repository.class);
+        repository.add(contract1, false);
+        repository.add(contract2, false);
+        repository.add(contract3, false);
+        app.getObject(JAXBUtils.class).write(repository, "scheme.xml");
+        Repository repositoryTemp = app.getObject(JAXBUtils.class).read("scheme.xml");
+        Assert.assertEquals(repository.getIndex(contract1), repositoryTemp.getIndex(contract1));
+        Assert.assertEquals(repository.getIndex(contract2), repositoryTemp.getIndex(contract2));
+        Assert.assertEquals(repository.getIndex(contract3), repositoryTemp.getIndex(contract3));
     }
 }

@@ -1,8 +1,8 @@
 package netcracker.danilavlebedev.repository;
 
+import jakarta.xml.bind.annotation.*;
 import netcracker.danilavlebedev.contracts.Contract;
 import netcracker.danilavlebedev.contracts.SearchingPredicates;
-import netcracker.danilavlebedev.db.DBQueries;
 import netcracker.danilavlebedev.di.Autowired;
 import netcracker.danilavlebedev.sort.ISorter;
 import netcracker.danilavlebedev.utils.DBUtils;
@@ -12,14 +12,19 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "repository")
 public class Repository {
     @Autowired
+    @XmlTransient
     private ISorter sorter;
 
     /*
      * @param repository simple array for contracts
      * @param size number of contracts in a repository
      */
+    @XmlElement(required = true, name = "contract")
     private Contract[] repository = new Contract[10];
     private int size = 0;
 
